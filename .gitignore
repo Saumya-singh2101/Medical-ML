@@ -1,0 +1,6 @@
+data/
+*.zip
+*.h5
+*.pkl
+__pycache__/
+venv/
