@@ -4,7 +4,6 @@ PyJWT
 bcrypt
 numpy
 Pillow
-tensorflow
 torch
 transformers
 scikit-learn
