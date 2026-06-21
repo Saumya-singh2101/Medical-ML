@@ -4,3 +4,53 @@ data/
 *.pkl
 __pycache__/
 venv/
+
+# Dataset
+data/
+
+# Model files
+*.pkl
+*.joblib
+*.h5
+*.keras
+*.pt
+*.pth
+
+# Archives
+*.zip
+*.rar
+*.7z
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+
+# Environment variables
+.env
+*.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Test/cache
+.pytest_cache/
+.mypy_cache/
+
+# Node.js (if frontend exists)
+node_modules/
