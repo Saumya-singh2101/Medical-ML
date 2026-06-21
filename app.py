@@ -69,7 +69,32 @@ def _explain_with_groq(text, pred, top_3):
     try:
         from services.groq_service import explain_with_groq
         return explain_with_groq(text, pred, top_3)
-    except Exception:  # noqa: BLE001
+    except Exception as e:  # noqa: BLE001
+        print("GROQ ERROR (symptoms):", repr(e))
+        return None
+
+
+def _explain_skin_with_groq(prediction, confidence, all_probs):
+    """
+    Reuses the same groq_service.explain_with_groq(text, pred, top_3) signature
+    so we don't need a second function in groq_service.py. We just frame the
+    "text" as a description of the image result instead of typed symptoms.
+    """
+    try:
+        from services.groq_service import explain_with_groq
+
+        pseudo_text = (
+            f"A skin image was analyzed by a CNN classifier. "
+            f"Predicted condition: {prediction} (confidence {confidence:.0%})."
+        )
+        top_3 = sorted(
+            [{"disease": cls, "confidence": p} for cls, p in all_probs.items()],
+            key=lambda x: x["confidence"],
+            reverse=True,
+        )[:3]
+        return explain_with_groq(pseudo_text, prediction, top_3)
+    except Exception as e:  # noqa: BLE001
+        print("GROQ ERROR (skin):", repr(e))
         return None
 
 
@@ -181,6 +206,10 @@ def predict_skin():
         result = predict_skin_image(file_bytes)
     except Exception as e:  # noqa: BLE001
         return jsonify({"error": f"Skin model not available: {e}"}), 503
+
+    result["explanation"] = _explain_skin_with_groq(
+        result["prediction"], result["confidence"], result["all_probabilities"]
+    )
 
     return jsonify(result)
 

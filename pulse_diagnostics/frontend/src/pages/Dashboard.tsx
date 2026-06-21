@@ -208,6 +208,19 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
                     />
                   ))}
                 </div>
+                {skinResult.explanation && (
+                  <div>
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <Sparkles size={13} className="text-cyan" />
+                      <span className="font-mono text-xs uppercase tracking-wider text-slate-400">
+                        Groq Analysis
+                      </span>
+                    </div>
+                    <div className="bg-panel2 border border-white/10 rounded-xl px-4 py-3 text-sm text-slate-300 leading-relaxed">
+                      {skinResult.explanation}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </section>
@@ -273,8 +286,16 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
                   ))}
                 </div>
                 {symptomResult.explanation && (
-                  <div className="bg-panel2 border border-white/10 rounded-xl px-4 py-3 text-sm text-slate-300 leading-relaxed">
-                    {symptomResult.explanation}
+                  <div>
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <Sparkles size={13} className="text-magenta" />
+                      <span className="font-mono text-xs uppercase tracking-wider text-slate-400">
+                        Groq Analysis
+                      </span>
+                    </div>
+                    <div className="bg-panel2 border border-white/10 rounded-xl px-4 py-3 text-sm text-slate-300 leading-relaxed">
+                      {symptomResult.explanation}
+                    </div>
                   </div>
                 )}
               </div>

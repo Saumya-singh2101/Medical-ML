@@ -11,6 +11,7 @@ export interface SkinResult {
   prediction: string;
   confidence: number;
   all_probabilities: Record<string, number>;
+  explanation?: string | null;
 }
 
 export async function predictSkin(file: File): Promise<SkinResult> {
