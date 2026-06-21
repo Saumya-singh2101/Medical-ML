@@ -1,14 +1,11 @@
-data/
-*.zip
-*.h5
-*.pkl
-__pycache__/
-venv/
-
-# Dataset
+# =====================
+# DATASET
+# =====================
 data/
 
-# Model files
+# =====================
+# MODEL FILES
+# =====================
 *.pkl
 *.joblib
 *.h5
@@ -16,41 +13,61 @@ data/
 *.pt
 *.pth
 
-# Archives
+# =====================
+# ARCHIVES
+# =====================
 *.zip
 *.rar
 *.7z
 
-# Python
+# =====================
+# PYTHON
+# =====================
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+
+# Virtual environments
 .venv/
 venv/
 env/
 
-# Environment variables
+# =====================
+# ENV FILES
+# =====================
 .env
 *.env
 
+# =====================
+# NODE MODULES (ADD THIS)
+# =====================
+node_modules/
+
+# =====================
 # IDE
+# =====================
 .vscode/
 .idea/
 
-# OS files
+# =====================
+# OS FILES
+# =====================
 .DS_Store
 Thumbs.db
 
-# Logs
+# =====================
+# LOGS
+# =====================
 *.log
 
-# Jupyter
+# =====================
+# JUPYTER
+# =====================
 .ipynb_checkpoints/
 
-# Test/cache
+# =====================
+# TEST / CACHE
+# =====================
 .pytest_cache/
 .mypy_cache/
-
-# Node.js (if frontend exists)
-node_modules/
