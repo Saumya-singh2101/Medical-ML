@@ -1,0 +1,11 @@
+Flask
+flask-cors
+PyJWT
+bcrypt
+numpy
+Pillow
+tensorflow
+torch
+transformers
+scikit-learn
+joblib
