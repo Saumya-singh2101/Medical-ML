@@ -9,4 +9,3 @@ transformers
 scikit-learn
 joblib
 tensorflow-cpu==2.15.0
-python-3.11.9
