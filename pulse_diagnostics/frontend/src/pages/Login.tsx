@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
+import { Activity, User, Lock, AlertCircle, ArrowRight, ArrowLeft } from 'lucide-react';
 import { login, register, AuthUser } from '../services/auth';
-import { Activity, User, Lock, Mail, AlertCircle, ScanLine } from 'lucide-react';
 
 interface LoginProps {
   onAuthed: (user: AuthUser) => void;
+  onBack?: () => void;
 }
 
-export const Login: React.FC<LoginProps> = ({ onAuthed }) => {
+export const Login: React.FC<LoginProps> = ({ onAuthed, onBack }) => {
   const [mode, setMode] = useState<'login' | 'signup'>('login');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -36,125 +37,161 @@ export const Login: React.FC<LoginProps> = ({ onAuthed }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
-      {/* ambient glows */}
-      <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-cyan/20 rounded-full blur-[120px]" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-magenta/20 rounded-full blur-[120px]" />
+    <div className="min-h-screen bg-void flex items-center justify-center px-4 relative overflow-hidden">
+      {/* Background */}
+      <div
+        className="absolute inset-0 opacity-[0.025]"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(0,229,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,1) 1px, transparent 1px)',
+          backgroundSize: '60px 60px',
+        }}
+      />
+      <div className="absolute top-[-20%] left-[-15%] w-[500px] h-[500px] rounded-full bg-cyan/[0.08] blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-[-20%] right-[-15%] w-[500px] h-[500px] rounded-full bg-magenta/[0.06] blur-[100px] pointer-events-none" />
 
-      <div className="w-full max-w-md relative z-10">
+      <div className="w-full max-w-[400px] relative z-10">
+        {/* Back button */}
+        {onBack && (
+          <button
+            onClick={onBack}
+            className="flex items-center gap-1.5 font-mono text-[10px] tracking-[0.15em] uppercase text-slate-600 hover:text-slate-400 transition mb-6"
+          >
+            <ArrowLeft size={12} /> Back
+          </button>
+        )}
+
+        {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center gap-3 mb-3">
-            <div className="p-3 bg-panel border border-cyan/50 rounded-xl shadow-neon-cyan">
-              <Activity className="text-cyan" size={26} />
-            </div>
+          <div className="inline-flex items-center justify-center w-12 h-12 bg-panel border border-cyan/30 rounded-2xl shadow-neon-cyan mb-4">
+            <Activity size={22} className="text-cyan" />
           </div>
-          <h1 className="font-display text-4xl font-bold tracking-tight text-white">
+          <h1 className="font-display text-3xl font-bold text-white tracking-tight">
             PULSE<span className="text-cyan">.</span>
           </h1>
-          <p className="text-slate-400 font-mono text-xs mt-2 tracking-widest uppercase">
-            AI-assisted diagnostics console
+          <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-slate-600 mt-1.5">
+            diagnostic console
           </p>
         </div>
 
-        <div className="bg-panel/80 backdrop-blur border border-white/10 rounded-2xl shadow-2xl p-6 relative overflow-hidden">
-          <div className="flex mb-6 border border-white/10 rounded-xl overflow-hidden">
-            <button
-              type="button"
-              onClick={() => setMode('login')}
-              className={`flex-1 py-2.5 font-display font-semibold text-sm tracking-wide transition-colors ${
-                mode === 'login' ? 'bg-cyan/15 text-cyan' : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              LOG IN
-            </button>
-            <button
-              type="button"
-              onClick={() => setMode('signup')}
-              className={`flex-1 py-2.5 font-display font-semibold text-sm tracking-wide transition-colors border-l border-white/10 ${
-                mode === 'signup' ? 'bg-magenta/15 text-magenta' : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              SIGN UP
-            </button>
+        {/* Card */}
+        <div className="bg-panel/70 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 relative overflow-hidden">
+          {/* Top accent */}
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan/40 to-transparent" />
+
+          {/* Tabs */}
+          <div className="flex gap-1 p-1 bg-black/30 rounded-xl mb-6">
+            {(['login', 'signup'] as const).map((m) => (
+              <button
+                key={m}
+                type="button"
+                onClick={() => { setMode(m); setError(null); }}
+                className={`flex-1 py-2 rounded-lg font-display font-semibold text-xs tracking-[0.1em] uppercase transition-all ${
+                  mode === m
+                    ? m === 'login'
+                      ? 'bg-cyan text-void shadow-neon-cyan'
+                      : 'bg-magenta text-white shadow-neon-magenta'
+                    : 'text-slate-500 hover:text-slate-300'
+                }`}
+              >
+                {m === 'login' ? 'Log In' : 'Sign Up'}
+              </button>
+            ))}
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Username */}
             <div>
-              <label className="block font-mono text-xs uppercase tracking-wider text-slate-400 mb-1.5">
+              <label className="block font-mono text-[10px] uppercase tracking-[0.15em] text-slate-500 mb-2">
                 Username
               </label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
+                <User size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-600" />
                 <input
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="clinician_01"
-                  className="w-full pl-10 bg-panel2 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-cyan/60 focus:ring-2 focus:ring-cyan/20 transition"
                   autoFocus
+                  className="w-full bg-black/40 border border-white/[0.08] rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder:text-slate-700 focus:outline-none focus:border-cyan/50 focus:ring-1 focus:ring-cyan/20 transition"
                 />
               </div>
             </div>
 
+            {/* Email (signup only) */}
             {mode === 'signup' && (
               <div>
-                <label className="block font-mono text-xs uppercase tracking-wider text-slate-400 mb-1.5">
-                  Email (optional)
+                <label className="block font-mono text-[10px] uppercase tracking-[0.15em] text-slate-500 mb-2">
+                  Email <span className="text-slate-700">(optional)</span>
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
+                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-600 text-xs">@</span>
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@example.com"
-                    className="w-full pl-10 bg-panel2 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-cyan/60 focus:ring-2 focus:ring-cyan/20 transition"
+                    className="w-full bg-black/40 border border-white/[0.08] rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder:text-slate-700 focus:outline-none focus:border-cyan/50 focus:ring-1 focus:ring-cyan/20 transition"
                   />
                 </div>
               </div>
             )}
 
+            {/* Password */}
             <div>
-              <label className="block font-mono text-xs uppercase tracking-wider text-slate-400 mb-1.5">
+              <label className="block font-mono text-[10px] uppercase tracking-[0.15em] text-slate-500 mb-2">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
+                <Lock size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-600" />
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 bg-panel2 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-cyan/60 focus:ring-2 focus:ring-cyan/20 transition"
+                  className="w-full bg-black/40 border border-white/[0.08] rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder:text-slate-700 focus:outline-none focus:border-cyan/50 focus:ring-1 focus:ring-cyan/20 transition"
                 />
               </div>
             </div>
 
+            {/* Error */}
             {error && (
-              <div className="flex items-center gap-2 bg-magenta/10 border border-magenta/40 text-magenta px-3 py-2 rounded-lg text-sm font-medium">
-                <AlertCircle size={15} /> {error}
+              <div className="flex items-center gap-2 bg-magenta/8 border border-magenta/30 text-magenta px-3.5 py-2.5 rounded-xl text-xs font-medium">
+                <AlertCircle size={13} className="flex-shrink-0" />
+                {error}
               </div>
             )}
 
+            {/* Submit */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 bg-cyan text-void font-display font-semibold py-2.5 rounded-lg shadow-neon-cyan hover:brightness-110 active:scale-[0.98] transition disabled:opacity-50"
+              className={`w-full flex items-center justify-center gap-2 font-display font-bold text-sm py-3 rounded-xl transition-all active:scale-[0.98] disabled:opacity-40 ${
+                mode === 'login'
+                  ? 'bg-cyan text-void shadow-neon-cyan hover:brightness-110'
+                  : 'bg-magenta text-white shadow-neon-magenta hover:brightness-110'
+              }`}
             >
-              <ScanLine size={16} />
-              {loading ? 'Verifying…' : mode === 'login' ? 'Enter Console' : 'Create Account'}
+              {loading ? (
+                <span className="w-4 h-4 border-2 border-current/30 border-t-current rounded-full animate-spin" />
+              ) : (
+                <>
+                  {mode === 'login' ? 'Enter Console' : 'Create Account'}
+                  <ArrowRight size={15} />
+                </>
+              )}
             </button>
           </form>
-        </div>
 
-        <p className="text-center text-sm text-slate-500 mt-6">
-          {mode === 'login' ? 'New to PULSE? ' : 'Already registered? '}
-          <button
-            onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
-            className="font-semibold text-cyan hover:underline"
-          >
-            {mode === 'login' ? 'Create an account' : 'Log in instead'}
-          </button>
-        </p>
+          <p className="text-center text-xs text-slate-600 mt-4">
+            {mode === 'login' ? 'No account? ' : 'Already registered? '}
+            <button
+              onClick={() => { setMode(mode === 'login' ? 'signup' : 'login'); setError(null); }}
+              className="text-cyan hover:underline font-semibold"
+            >
+              {mode === 'login' ? 'Sign up' : 'Log in'}
+            </button>
+          </p>
+        </div>
       </div>
     </div>
   );
