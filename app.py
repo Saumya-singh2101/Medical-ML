@@ -12,7 +12,16 @@ import auth
 from skin_predict import predict_skin_image
 
 app = Flask(__name__)
-CORS(app)
+
+CORS(app, resources={
+    r"/api/*": {
+        "origins": [
+            "https://medical-o3qnxpdle-saumya-singh2101s-projects.vercel.app",
+            "http://localhost:5173"
+        ]
+    }
+})
+CORS(app, supports_credentials=True)
 
 auth.init_db()
 
